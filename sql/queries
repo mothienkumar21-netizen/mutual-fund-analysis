@@ -1,0 +1,57 @@
+-- 1. Top 5 Funds by AUM
+SELECT scheme_name, aum_crore
+FROM fact_performance
+ORDER BY aum_crore DESC
+LIMIT 5;
+
+-- 2. Average NAV
+SELECT AVG(nav) AS avg_nav
+FROM fact_nav;
+
+-- 3. Monthly Average NAV
+SELECT strftime('%Y-%m', date) AS month,
+AVG(nav) AS avg_nav
+FROM fact_nav
+GROUP BY month;
+
+-- 4. Transactions by State
+SELECT state,
+COUNT(*) AS total_transactions
+FROM fact_transactions
+GROUP BY state
+ORDER BY total_transactions DESC;
+
+-- 5. Funds with Expense Ratio < 1%
+SELECT scheme_name,
+expense_ratio_pct
+FROM fact_performance
+WHERE expense_ratio_pct < 1;
+
+-- 6. Total Investment Amount
+SELECT SUM(amount_inr)
+FROM fact_transactions;
+
+-- 7. Transaction Type Distribution
+SELECT transaction_type,
+COUNT(*)
+FROM fact_transactions
+GROUP BY transaction_type;
+
+-- 8. Average Return by Category
+SELECT category,
+AVG(return_3yr_pct)
+FROM fact_performance
+GROUP BY category;
+
+-- 9. Top Funds by Sharpe Ratio
+SELECT scheme_name,
+sharpe_ratio
+FROM fact_performance
+ORDER BY sharpe_ratio DESC
+LIMIT 10;
+
+-- 10. Risk Grade Distribution
+SELECT risk_grade,
+COUNT(*)
+FROM fact_performance
+GROUP BY risk_grade;
